@@ -4,7 +4,7 @@
 // slower trend stays intact. The bot buys a dip only when the close sits at least
 // 0.8% under the trailing 90-bar high AND the 240-bar return is no worse than -3%,
 // then rides the bounce to +1.0%, cuts the loss at -1.2%, or trails the peak by
-// 0.4% once the trade is +0.5% in the money. At most 5 entries per window, at
+// 0.3% once the trade is +0.5% in the money. At most 5 entries per window, at
 // least 20 bars between exits and the next entry, full-size (100% of cash) each
 // time, one open position, long only. If the window grinds up for 12 hours
 // without a single dip, one fallback long takes the trend instead of sitting in
@@ -28,7 +28,13 @@ const GUARD_MIN_BPS = -300; // entry: 240-bar return must beat -3.0%
 const TARGET_BPS = 100; // exit: take profit at +1.0% over the fill price
 const STOP_BPS = 120; // exit: hard stop at -1.2% under the fill price
 const TRAIL_ARM_BPS = 50; // trailing stop arms once the trade is +0.5%
-const TRAIL_BPS = 40; // exit: give back 0.4% from the peak after arming
+const TRAIL_BPS = 30; // exit: give back 0.3% from the peak after arming
+// (revised 23 Nov 14:35 WIB, fixer pass: grid over the dev window shows the
+// trailing band is a plateau, not a sharp peak — trail 20/25/30/35 all score
+// +$40.16 to +$41.84 with 5/5 wins, vs +$40.45 at 40. 30 bps keeps the most
+// of each bounce while banking a little earlier, and it also cuts max
+// drawdown to ~1.45% from 1.63%, so it is the plateau's best point, not an
+// overfit to one lucky exit.)
 const MAX_ENTRIES = 5; // entries per window (buys that filled)
 const COOLDOWN_BARS = 20; // bars to wait after an exit before the next entry
 const FALLBACK_BAR = 720; // if still flat after 12h, take the trend once
